@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 async function sendUserLoginData(loginDetails){
     const response = await fetch('http://localhost:8000/api/users/login',{
         method: 'POST',
@@ -10,6 +11,8 @@ async function sendUserLoginData(loginDetails){
         }
     });
     const data = await response.json();
+    console.log(data);
+    Cookies.set('sessionToken',data.token);
     if(!response.ok){
         throw new Error(data.message || 'Something went wrong!');
     } else {
