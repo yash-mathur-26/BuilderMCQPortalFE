@@ -1,0 +1,13 @@
+.test {
+    width: 80%;
+    height: 100%;
+    object-fit: cover;
+    padding: 3rem;
+    margin-left:5rem;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem;
+}
