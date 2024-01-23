@@ -2,24 +2,7 @@
 import classes from './admin-login.module.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
-async function sendUserLoginData(loginDetails){
-    const response = await fetch('http://localhost:8000/api/users/login',{
-        method: 'POST',
-        body: JSON.stringify(loginDetails),
-        headers:{
-            'Content-Type': 'application/json',
-        }
-    });
-    const data = await response.json();
-    console.log(data);
-    Cookies.set('sessionToken',data.token);
-    if(!response.ok){
-        throw new Error(data.message || 'Something went wrong!');
-    } else {
-        
-    }
-}
+import { sendUserLoginData } from '@/lib/admin-login';
 export default function AdminLogin(){
     const [enteredEmail, setEnteredEmail] = useState('');
     const [enteredPassword, setEnteredPassword] = useState('');

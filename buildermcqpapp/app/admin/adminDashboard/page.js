@@ -4,16 +4,17 @@ import classes from "./page.module.css";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
+import { checkLogin,removeToken } from '@/lib/admin-login';
 export default function AdminDashboard(){
     const router = useRouter();
     useEffect(()=>{
-        const sessionToken = Cookies.get('sessionToken');
+        const sessionToken = checkLogin();
         if(!sessionToken){
             router.push('/admin');
         }
     })
     const handleLogout=()=>{
-        Cookies.remove('sessionToken');
+        removeToken();
         router.push('/admin');
     }
     return(
