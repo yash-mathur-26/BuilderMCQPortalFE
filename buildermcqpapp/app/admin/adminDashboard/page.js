@@ -1,8 +1,6 @@
 "use client";
 import Link from 'next/link';
-import classes from "./page.module.css";
 import { useEffect } from "react";
-import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { checkLogin,removeToken } from '@/lib/admin-login';
 export default function AdminDashboard(){
@@ -10,6 +8,7 @@ export default function AdminDashboard(){
     useEffect(()=>{
         const sessionToken = checkLogin();
         if(!sessionToken){
+            removeToken();
             router.push('/admin');
         }
     })

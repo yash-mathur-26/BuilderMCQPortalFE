@@ -1,5 +1,5 @@
-'use server';
-import { cookies } from 'next/headers';
+
+import Cookies  from "js-cookie";
 
 export async function sendUserLoginData(loginDetails){
     const response = await fetch('http://localhost:8000/api/users/login',{
@@ -10,22 +10,28 @@ export async function sendUserLoginData(loginDetails){
         }
     });
     const data = await response.json();
-    console.log(data.data);
-    cookies().set('sessionToken',data.data.token);
+        
     if(!response.ok){
         throw new Error(data.message || 'Something went wrong!');
     } else {
-        
+        console.log("Got data",data);
+        Cookies.set('sessionToken',data.data.token);
     }
 }
 
 export async function checkLogin(){
-    const token = cookies().get('sessionToken');
+    const token = await Cookies.get('sessionToken');
     console.log("Check Server tokens",token);
+    console.log("All cookies", Cookies.get('sessionToken'));
     return token;
 
 }
 
 export async function removeToken(){
-    cookies().delete('sessionToken');
+    await Cookies.remove('sessionToken');
+}
+
+export function getToken(){
+    console.log(Cookies.get('sessionToken'));
+    return Cookies.get('sessionToken');
 }
