@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Test from "../../assets/Test.jpg";
 import { useState } from 'react';
+import Link from "next/link";
 export default function NavBarLinks(){
     const [dropdown,setDropDown] = useState(false);
     const handleDropDown=()=>{
@@ -10,9 +11,10 @@ export default function NavBarLinks(){
     return(
         <div className="bg-gray-800 text-white p-4 flex justify-between items-center">
             <div className="flex space-x-4">
-                <a href="#" className="hover:text-gray-300">Home</a>
-                <a href="#" className="hover:text-gray-300">Technologies</a>
-                <a href="#" className="hover:text-gray-300">Exam Scheduler</a>
+                <Link href="/admin/dashboard" className="hover:text-gray-300">Home</Link>
+                <Link href="/admin/technologies" className="hover:text-gray-300">Technologies</Link>
+                <Link href="/admin/scheduler" className="hover:text-gray-300">Exam Scheduler</Link>
+                
             </div>
             <div className="relative">
                 <button className="flex items-center focus:outline-none" onClick={handleDropDown}>
@@ -35,8 +37,8 @@ export default function NavBarLinks(){
                 </button>
                 { dropdown &&
                     <div className="hidden md:block absolute top-12 right-0 bg-white text-gray-800 p-2 rounded-md shadow-md">
-                        <a href="#" className="block py-2">Profile</a>
-                        <a href="#" className="block py-2">Logout</a>
+                        <Link href="/admin/profile" className="hover:text-gray-300 block py-2">Profile</Link>
+                        <Link href="/admin" className="hover:text-gray-300 block py-2">Logout</Link>
                     </div>
             
                 }
