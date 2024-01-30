@@ -1,10 +1,10 @@
-export default function TechnologyAddition(){
+export default function EditTechnologyForm(){
     const durations = Array.from({ length: 121 }, (_, i) => i); 
     
     return(
         <div className="bg-gray-900 bg-opacity-20 rounded-lg p-6 shadow-md">
             <h3 className="text-2xl font-bold text-gray-200 text-left p-14">
-                Add Technologies for Exams
+                Update Exam for Technology
             </h3>
             <form className="bg-white p-8 rounded-md shadow-md">
                 <div className="mb-4">
@@ -58,7 +58,7 @@ export default function TechnologyAddition(){
                     </select>
                 </div>
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600">
-                    Add Technology
+                    Update Exam
                 </button>
             </form>
         </div>

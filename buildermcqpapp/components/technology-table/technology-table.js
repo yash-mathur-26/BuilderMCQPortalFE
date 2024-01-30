@@ -1,4 +1,5 @@
-import { FiEdit, FiDelete } from "react-icons/fi";
+import Link from "next/link";
+import { FiEdit, FiDelete, FiPlus } from "react-icons/fi";
 export default function TechnologyTable(){
     
     const data = [
@@ -32,8 +33,15 @@ export default function TechnologyTable(){
                                 <td className="py-2 px-4 border-b">{row.cutoff}</td>
                                 <td className="py-2 px-4 border-b">{row.examTime}</td>
                                 <td className="py-2 px-4 border-b">
+                                    <button className="mr-2 text-green-500 hover:text-green-600">
+                                        <Link href={`/admin/technologies/${row.techName}/questions`}>
+                                            <FiPlus/>
+                                        </Link>
+                                    </button>
                                     <button className="mr-2 text-blue-500 hover:text-blue-600">
-                                        <FiEdit/>
+                                        <Link href={`/admin/technologies/${row.techName}/editexam`}>
+                                            <FiEdit/>
+                                        </Link>
                                     </button>
                                     <button className="text-red-500 hover:text-red-600">
                                         <FiDelete/>
