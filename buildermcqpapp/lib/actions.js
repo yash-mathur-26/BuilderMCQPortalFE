@@ -2,10 +2,15 @@
 // import { signIn } from '@/auth';
 import { sendUserLoginData } from './admin-login';
 import { cookies } from 'next/headers';
-export async function authentication(formData){
+export async function authentication(prevState,formData){
     console.log("Logging Form",formData);
+    const loginDetails = {
+        email:formData.get('email'),
+        password:formData.get('password')
+    }
     try{
-        // await sendUserLoginData('credentials',formData)
+        await sendUserLoginData(loginDetails)
+        return { data }
     } catch (error){
         if(error){
             switch(error.type){

@@ -1,13 +1,17 @@
 'use client'
 import { authentication } from "@/lib/actions"
 import { useFormState, useFormStatus } from 'react-dom';
+
+const intialState = {
+    errorMessage:null
+}
 export default function AdminLoginForm(){
-    const [ errorMessage,dispatch ] = useFormState(authentication,undefined);
+    const [state,formAction] = useFormState(authentication,intialState);
     return(
     <>
         <div className="bg-gray-800 bg-opacity-20 rounded-lg p-6 shadow-md">
             <h2 className="text-2xl font-bold text-gray-200 text-center">Admin Login</h2>
-                <form className="space-y-4" action={authentication}>
+                <form className="space-y-4" action={formAction}>
                     <div className="flex flex-col space-y-4">
                         <label className="text-gray-200 font-bold">Username</label>
                         <input 
@@ -27,7 +31,7 @@ export default function AdminLoginForm(){
                         />
                     </div>
                     <div className="bg-red-100 border border-red-400text-red-700 px-4 py-2 rounded-md">
-                        {errorMessage && <p className="text-sm">{errorMessage}</p>}
+                        {state && <p className="text-sm">{state.errorMessage}</p>}
                     </div>
                     <LoginButton/>
                 </form>

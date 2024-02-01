@@ -1,6 +1,4 @@
 
-import Cookies  from "js-cookie";
-
 export async function sendUserLoginData(loginDetails){
     const response = await fetch('http://localhost:8000/api/users/login',{
         method: 'POST',
@@ -10,12 +8,11 @@ export async function sendUserLoginData(loginDetails){
         }
     });
     const data = await response.json();
-        
     if(!response.ok){
-        throw new Error(data.message || 'Something went wrong!');
+        return new Error(data.message || 'Something went wrong!');
     } else {
-        console.log("Got data",data);
-        Cookies.set('sessionToken',data.data.token);
+        console.log("Got data",data); 
+        return data;
     }
 }
 
