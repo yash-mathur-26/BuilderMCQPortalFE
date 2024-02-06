@@ -1,15 +1,9 @@
 import Link from "next/link";
 import { FiEdit, FiDelete, FiPlus } from "react-icons/fi";
+import { getTechnologies } from "@/lib/technology";
 export default function TechnologyTable(){
     
-    const data = [
-        { sno: 1, techName: 'React', questions: 20, cutoff: 70, examTime: '90 mins' },
-        { sno: 2, techName: 'Node.js', questions: 15, cutoff: 65, examTime: '75 mins' },
-        { sno: 3, techName: 'JavaScript', questions: 25, cutoff: 75, examTime: '120 mins' },
-        { sno: 4, techName: 'HTML', questions: 10, cutoff: 50, examTime: '45 mins' },
-        { sno: 5, techName: 'CSS', questions: 15, cutoff: 60, examTime: '60 mins' },
-        { sno: 6, techName: 'Next.js', questions: 18, cutoff: 68, examTime: '90 mins' },
-    ]
+    const data = getTechnologies();
     return(
         <>
             <div className="overflow-x-auto">
@@ -25,7 +19,7 @@ export default function TechnologyTable(){
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((row)=>(
+                        {data?.map((row)=>(
                             <tr key={row.sno}>
                                 <td className="py-2 px-4 border-b">{row.sno}</td>
                                 <td className="py-2 px-4 border-b">{row.techName}</td>

@@ -13,7 +13,7 @@ export default function NavBarLinks(){
             <div className="flex space-x-4">
                 <Link href="/admin/dashboard" className="hover:text-gray-300">Home</Link>
                 <Link href="/admin/technologies" className="hover:text-gray-300">Technologies</Link>
-                <Link href="/admin/scheduler" className="hover:text-gray-300">Exam Scheduler</Link>
+                <Link href="/admin/dashboard" className="hover:text-gray-300">Exam Scheduler</Link>
                 
             </div>
             <div className="relative">

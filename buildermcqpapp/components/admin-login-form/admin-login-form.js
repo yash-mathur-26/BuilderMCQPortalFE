@@ -1,12 +1,20 @@
 'use client'
 import { authentication } from "@/lib/actions"
+import { useRouter } from "next/navigation";
 import { useFormState, useFormStatus } from 'react-dom';
 
 const intialState = {
     errorMessage:null
 }
 export default function AdminLoginForm(){
-    const [state,formAction] = useFormState(authentication,intialState);
+    const [state,formAction] = useFormState(authentication,null);
+    const router = useRouter();
+    if(state){
+        router.push('/admin/dashboard');
+    }
+    else{
+
+    }
     return(
     <>
         <div className="bg-gray-800 bg-opacity-20 rounded-lg p-6 shadow-md">
@@ -31,7 +39,7 @@ export default function AdminLoginForm(){
                         />
                     </div>
                     <div className="bg-red-100 border border-red-400text-red-700 px-4 py-2 rounded-md">
-                        {state && <p className="text-sm">{state.errorMessage}</p>}
+                        {state && <p className="text-sm">{state}</p>}
                     </div>
                     <LoginButton/>
                 </form>

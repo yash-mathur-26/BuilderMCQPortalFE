@@ -1,6 +1,5 @@
 'use client'
 import { useState } from 'react';
-
 export default function ExamScheduler(){
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -22,7 +21,7 @@ export default function ExamScheduler(){
         
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
-            return;
+            return;  
         }
     
         console.log('Form submitted:', { startDate, endDate, technology, score, duration });

@@ -1,5 +1,4 @@
-'use server';
-// import { signIn } from '@/auth';
+'use server'
 import { sendUserLoginData } from './admin-login';
 import { cookies } from 'next/headers';
 export async function authentication(prevState,formData){
@@ -9,8 +8,12 @@ export async function authentication(prevState,formData){
         password:formData.get('password')
     }
     try{
-        await sendUserLoginData(loginDetails)
-        return { data }
+        const data = await sendUserLoginData(loginDetails)
+        console.log("Error",data);
+        if(data){
+            handleLoginSession(data.data);
+            return true;
+        }
     } catch (error){
         if(error){
             switch(error.type){
@@ -25,16 +28,19 @@ export async function authentication(prevState,formData){
 }
 
 export async function handleLoginSession(sessionData){
-    const encryptedSessionData = encrypt(sessionData)
-    coookies().set('session',encryptedSessionData,{
+    const encryptedSessionData = sessionData
+    cookies().set('session',encryptedSessionData,{
         httpOnly:true,
         secure:process.env.NODE_ENV === 'production',
         maxAge: 60*60*2,
         path:'/admin'
     })
+    console.log("Hello",cookies().get('session')?.value);
 }
 
-export async function getSessionData(req){
-    const encryptedSessionData = cookies.get('session')?.value
-    return encryptedSessionData ? JSON.parse(decrypt(encryptedSessionData)) : null
+export async function getSessionData(){
+    
+    const encryptedSessionData = cookies().set('session',"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA3MTU1OTU5LCJleHAiOjE3MDcxNTk1NTl9.dYHJh-t6wpNtJx7EZYcllhmv1T_r3WqqlOkZ1gYU_j0")
+    console.log("Sessions1",encryptedSessionData)
+    return encryptedSessionData ? encryptedSessionData : null
 }

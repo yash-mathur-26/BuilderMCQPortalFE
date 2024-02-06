@@ -1,5 +1,6 @@
 import AdminImageContainer from '../../components/admin-image-container/admin-image-container';
 import AdminLoginForm  from '../../components/admin-login-form/admin-login-form';
+
 export default function Admin(){
     return (
         <div className="min-h-screen">

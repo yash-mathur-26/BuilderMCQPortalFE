@@ -1,11 +1,12 @@
-
+'use server';
 export async function sendUserLoginData(loginDetails){
     const response = await fetch('http://localhost:8000/api/users/login',{
         method: 'POST',
-        body: JSON.stringify(loginDetails),
         headers:{
             'Content-Type': 'application/json',
-        }
+        },
+        body: JSON.stringify(loginDetails),
+        
     });
     const data = await response.json();
     if(!response.ok){
@@ -28,7 +29,7 @@ export async function removeToken(){
     await Cookies.remove('sessionToken');
 }
 
-export function getToken(){
-    console.log(Cookies.get('sessionToken'));
-    return Cookies.get('sessionToken');
+export async function getToken(){
+    console.log(cookies().get('session'));
+    return cookies().get('session');
 }
