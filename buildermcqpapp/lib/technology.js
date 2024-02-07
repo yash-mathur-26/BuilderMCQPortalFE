@@ -18,6 +18,11 @@ export async function getTechnologies(){
     console.log("Tech data",data.data)
     return data.data;  
 }
+export async function getTechnologyId(techName){
+    const data = await getTechnologies();
+    const idData = data.filter((row)=>{ if(row.name === techName.technology) return row.id});
+    return idData[0].id;
+}
 function isInvalidText(text){
     return !text || text.trim() === '';
 }

@@ -1,7 +1,8 @@
 'use client';
 import { useState } from "react"
-
-export default function QuestionAddition(){
+import { useRouter } from "next/navigation"; 
+import { getTechnologyId } from "@/lib/technology";
+export default function QuestionAddition({technology}){
     const [ question, setQuestion ] = useState('');
     const [answers,setAnswers] = useState([
         { text:'', isCorrect:false },
@@ -16,6 +17,8 @@ export default function QuestionAddition(){
         newAnswers[index].text = text;
         setAnswers(newAnswers);
     }
+    const getTechId = getTechnologyId(technology);
+    console.log(getTechId);
     const handleIsCorrectChange = (index)=>{
         const newAnswers = [...answers];
         newAnswers.forEach((answers,i)=>{
@@ -32,7 +35,7 @@ export default function QuestionAddition(){
         console.log("Answer",answers);
         console.log("Options",options);
         console.log("Correct",correctAnswer);
-        
+        console.log("TechnologyID",getTechId);
         setQuestion('');
         setAnswers(['','','','']);
         
