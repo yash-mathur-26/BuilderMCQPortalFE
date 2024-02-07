@@ -1,7 +1,8 @@
-import { useFormState } from 'react-dom';
+'use client';
+import { useFormState,useFormStatus } from 'react-dom';
 import { addTechnology } from "@/lib/technology";
 export default function TechnologyForm(){
-    const [state, formAction] = useFormState(addTechnology,{message:null})
+    const [state, formAction] = useFormState(addTechnology,null)
     const durations = Array.from({ length: 121 }, (_, i) => i); 
     return(
         <>
@@ -65,17 +66,24 @@ export default function TechnologyForm(){
             />
             </div>
             <div className="col-span-2 flex justify-center">
-            <button
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            >
-                Submit
-            </button>
-            {state.message && <p>{state.message}</p> }
+                <AddTechButton/>
+            {state && <p>{state}</p> }
             
             </div>
         </form>
         </div>
         </main>
         </>
+    )
+}
+function AddTechButton(){
+    const {pending} = useFormStatus();
+    return (
+        <div>
+            <button aria-disabled={pending} type='submit'
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                Add Technology 
+            </button>    
+        </div>
     )
 }

@@ -28,7 +28,7 @@ export async function authentication(prevState,formData){
 }
 
 export async function handleLoginSession(sessionData){
-    const encryptedSessionData = sessionData
+    const encryptedSessionData = sessionData?.token
     cookies().set('session',encryptedSessionData,{
         httpOnly:true,
         secure:process.env.NODE_ENV === 'production',
@@ -39,8 +39,7 @@ export async function handleLoginSession(sessionData){
 }
 
 export async function getSessionData(){
-    
-    const encryptedSessionData = cookies().set('session',"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA3MTU1OTU5LCJleHAiOjE3MDcxNTk1NTl9.dYHJh-t6wpNtJx7EZYcllhmv1T_r3WqqlOkZ1gYU_j0")
+    const encryptedSessionData = await cookies().get('session')?.value
     console.log("Sessions1",encryptedSessionData)
     return encryptedSessionData ? encryptedSessionData : null
 }

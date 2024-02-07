@@ -1,4 +1,4 @@
-
+'use server';
 import { redirect } from "next/navigation";
 import { getToken } from "./admin-login";
 import Cookies from "js-cookie";
@@ -6,17 +6,17 @@ import { revalidatePath } from "next/cache";
 import { getSessionData } from "./actions"; 
 import { cookies } from "next/headers";
 export async function getTechnologies(){
-    console.log(cookies().get('session')?.value?.token);
+    console.log("New Cookies",cookies().get('session')?.value);
     const response = await fetch('http://localhost:8000/api/technologies',{
         method: 'GET',
         headers:{
             'Content-Type': 'application/json',
-            'token': getSessionData()
+            'token': cookies().get('session')?.value
         }
     });
     const data = await response.json();
-    console.log("Tech data",data)
-    return data;  
+    console.log("Tech data",data.data)
+    return data.data;  
 }
 function isInvalidText(text){
     return !text || text.trim() === '';
@@ -40,18 +40,18 @@ export async function addTechnology(prevState,formData){
             };
         }
     const response = await fetch('http://localhost:8000/api/technologies',{
+        cache:'no-store',
         method: 'POST',
         body: JSON.stringify(technology),
         headers:{
             'Content-Type': 'application/json',
-            'token': getToken().value
+            'token': cookies().get('session')?.value
         }
     });
     if(!response.ok){
         throw new Error(data.message || 'Something went wrong!');
     } else {
-        revalidatePath('/admin/technologies')
-        console.log("Added Tech");
+        console.log("Added Tech",response.json());
+        revalidatePath('/admin/technologies');
     }
-    redirect('/admin/technologies');
 }

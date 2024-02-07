@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { FiEdit, FiDelete, FiPlus } from "react-icons/fi";
 import { getTechnologies } from "@/lib/technology";
-export default function TechnologyTable(){
+export default async function TechnologyTable(){
     
-    const data = getTechnologies();
+    const data = await getTechnologies();
+    console.log("Technology Table",data);
     return(
         <>
             <div className="overflow-x-auto">
@@ -19,16 +20,16 @@ export default function TechnologyTable(){
                         </tr>
                     </thead>
                     <tbody>
-                        {data?.map((row)=>(
-                            <tr key={row.sno}>
-                                <td className="py-2 px-4 border-b">{row.sno}</td>
-                                <td className="py-2 px-4 border-b">{row.techName}</td>
-                                <td className="py-2 px-4 border-b">{row.questions}</td>
-                                <td className="py-2 px-4 border-b">{row.cutoff}</td>
-                                <td className="py-2 px-4 border-b">{row.examTime}</td>
+                        {data.map((row)=>(
+                            <tr key={row.id}>
+                                <td className="py-2 px-4 border-b">{row.id}</td>
+                                <td className="py-2 px-4 border-b">{row.name}</td>
+                                <td className="py-2 px-4 border-b">{row.noOfQuestions}</td>
+                                <td className="py-2 px-4 border-b">{row.cutOff}</td>
+                                <td className="py-2 px-4 border-b">{row.duration}</td>
                                 <td className="py-2 px-4 border-b">
                                     <button className="mr-2 text-green-500 hover:text-green-600">
-                                        <Link href={`/admin/technologies/${row.techName}/questions`}>
+                                        <Link href={`/admin/technologies/${row.name}/questions`}>
                                             <FiPlus/>
                                         </Link>
                                     </button>
