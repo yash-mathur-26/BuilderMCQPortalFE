@@ -3,17 +3,11 @@ import { authentication } from "@/lib/actions"
 import { useRouter } from "next/navigation";
 import { useFormState, useFormStatus } from 'react-dom';
 
-const intialState = {
-    errorMessage:null
-}
 export default function AdminLoginForm(){
-    const [state,formAction] = useFormState(authentication,null);
+    const [state,formAction] = useFormState(authentication,undefined);
     const router = useRouter();
     if(state){
         router.push('/admin/dashboard');
-    }
-    else{
-
     }
     return(
     <>

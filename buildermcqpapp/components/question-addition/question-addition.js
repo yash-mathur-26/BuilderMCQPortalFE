@@ -1,93 +1,138 @@
 'use client';
-import { useState } from "react"
-import { useRouter } from "next/navigation"; 
-import { getTechnologyId } from "@/lib/technology";
-export default function QuestionAddition({technology}){
-    const [ question, setQuestion ] = useState('');
-    const [answers,setAnswers] = useState([
-        { text:'', isCorrect:false },
-        { text:'', isCorrect:false },
-        { text:'', isCorrect:false },
-        { text:'', isCorrect:false }
-    ]);
-    const [correctAnswer,setCorrectAnswer] = useState(['']);
-    const [options,setOptions] = useState(['']);
-    const handleAnswerChange = (index,text)=>{
-        const newAnswers = [...answers];
-        newAnswers[index].text = text;
-        setAnswers(newAnswers);
-    }
-    const getTechId = getTechnologyId(technology);
-    console.log(getTechId);
-    const handleIsCorrectChange = (index)=>{
-        const newAnswers = [...answers];
-        newAnswers.forEach((answers,i)=>{
-            if(i===index){
-                answers.isCorrect = true;
-            }
-        })
-    }
-    const handleSubmitQnA= async (e)=>{
+import { useState } from 'react';
+
+const QuestionAddition = () => {
+    const [question, setQuestion] = useState('');
+    const [answers, setAnswers] = useState(['']);
+    const [correctAnswer, setCorrectAnswer] = useState(null);
+    const [isMultipleChoice, setIsMultipleChoice] = useState(true);
+
+    const addAnswer = () => {
+        setAnswers([...answers, '']);
+    };
+
+    const removeAnswer = (index) => {
+        const updatedAnswers = [...answers];
+        updatedAnswers.splice(index, 1);
+        setAnswers(updatedAnswers);
+
+        if (correctAnswer === index) {
+        setCorrectAnswer(null);
+        }
+    };
+
+    const handleAnswerChange = (index, value) => {
+        const updatedAnswers = [...answers];
+        updatedAnswers[index] = value;
+        setAnswers(updatedAnswers);
+    };
+
+    const handleCorrectAnswerChange = (index) => {
+        if (isMultipleChoice) {
+        const isChecked = correctAnswer === null ? true : !correctAnswer.includes(index);
+
+        if (isChecked) {
+            setCorrectAnswer((prevCorrectAnswer) => [...(prevCorrectAnswer || []), index]);
+        } else {
+            setCorrectAnswer((prevCorrectAnswer) =>
+            prevCorrectAnswer.filter((ans) => ans !== index)
+            );
+        }
+        } else {
+        setCorrectAnswer(index);
+        }
+    };
+
+    const handleSubmit = (e) => {
         e.preventDefault();
-        setOptions(answers.map((e)=>e.text));
-        setCorrectAnswer(answers.filter((e)=>e.isCorrect===true).map((e)=>e.text));
-        console.log("Question",question);
-        console.log("Answer",answers);
-        console.log("Options",options);
-        console.log("Correct",correctAnswer);
-        console.log("TechnologyID",getTechId);
-        setQuestion('');
-        setAnswers(['','','','']);
-        
-        setCorrectAnswer([]);
-    }
-    return(
-        <div className="max-w-md mx-auto bg-white p-8 mt-10 rounded-md shadow-md">
-            <h2 className="text-2xl font-bold mb-6">Submit Question</h2>
-            <form onSubmit={(e)=>handleSubmitQnA(e)}>
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-600">
-                        Question
-                    </label>
-                    <textarea className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
-                        row="4"
-                        value={question}
-                        onChange={(e)=>setQuestion(e.target.value)}
-                        required
-                    >
-                    </textarea>
-                </div>
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-gray-600">
-                        Answers
-                    </label>
-                    {answers.map((answer,index)=>(
-                        <div key={index} className="flex items-center mb-2">
-                            <input
-                                type="checkbox"
-                                name="correctAnswer"
-                                className="mr-2"
-                                checked={answer.isCorrect}
-                                onChange={()=>handleIsCorrectChange(index)}
-                                />
-                            <input
-                                type="text"
-                                className="w-4/5 p-2 border border-gray-300 rounded-md"
-                                onChange={(e)=>handleAnswerChange(index,e.target.value)}
-                                value={answer.text}
-                                required
-                            />
-                        </div>
-                    ))}
-                    <button
-                        type="submit"
-                        className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-                    >
-                        Submit
-                    </button>
-                </div>
-            </form>
-            
+        // Add your logic to submit the form data
+        console.log({ question, answers, correctAnswer, isMultipleChoice });
+    };
+
+    return (
+        <form className="max-w-md mx-auto mt-8 p-4 border rounded shadow-lg bg-white">
+        <label className="block mb-2">
+            Question:
+            <input
+            className="w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500"
+            type="text"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+            />
+        </label>
+        <br />
+
+        {answers.map((answer, index) => (
+            <div key={index} className="mb-4">
+            <label className="block mb-2">
+                Answer {index + 1}:
+                <input
+                className="w-full px-3 py-2 border rounded focus:outline-none focus:border-blue-500"
+                type="text"
+                value={answer}
+                onChange={(e) => handleAnswerChange(index, e.target.value)}
+                />
+            </label>
+
+            <label className="inline-block mr-4">
+                <input
+                type={isMultipleChoice ? 'checkbox' : 'radio'}
+                checked={isMultipleChoice ? correctAnswer?.includes(index) : correctAnswer === index}
+                onChange={() => handleCorrectAnswerChange(index)}
+                />
+                <span className="ml-2">Correct</span>
+            </label>
+
+            <button
+                type="button"
+                className="bg-red-500 text-white px-3 py-1 rounded"
+                onClick={() => removeAnswer(index)}
+            >
+                Remove
+            </button>
+            </div>
+        ))}
+
+        <button
+            type="button"
+            className="bg-green-500 text-white px-3 py-1 rounded"
+            onClick={addAnswer}
+        >
+            Add Answer
+        </button>
+
+        <div className="mt-4">
+            <label className="mr-4">
+            <input
+                type="radio"
+                name="answerType"
+                value="single"
+                checked={!isMultipleChoice}
+                onChange={() => setIsMultipleChoice(false)}
+            />
+            <span className="ml-2">Single Answer</span>
+            </label>
+
+            <label>
+            <input
+                type="radio"
+                name="answerType"
+                value="multiple"
+                checked={isMultipleChoice}
+                onChange={() => setIsMultipleChoice(true)}
+            />
+            <span className="ml-2">Multiple Choice</span>
+            </label>
         </div>
-    )
-}
+
+        <button
+            type="submit"
+            className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline-blue"
+        >
+            Submit
+        </button>
+        </form>
+    );
+};
+
+export default QuestionAddition;
