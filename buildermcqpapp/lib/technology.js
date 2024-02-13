@@ -6,7 +6,6 @@ import { revalidatePath } from "next/cache";
 import { getSessionData } from "./actions"; 
 import { cookies } from "next/headers";
 export async function getTechnologies(){
-    console.log("New Cookies",cookies().get('session')?.value);
     const response = await fetch('http://localhost:8000/api/technologies',{
         method: 'GET',
         headers:{
@@ -15,7 +14,6 @@ export async function getTechnologies(){
         }
     });
     const data = await response.json();
-    console.log("Tech data",data.data)
     return data.data;  
 }
 export async function getTechnologyId(techName){
