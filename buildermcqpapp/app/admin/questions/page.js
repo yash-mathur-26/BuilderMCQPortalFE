@@ -5,6 +5,7 @@ import React from "react";
 
 async function page() {
   const data = await getQuestions();
+
   return (
     <div className="min-h-screen">
       <NavBarLinks />

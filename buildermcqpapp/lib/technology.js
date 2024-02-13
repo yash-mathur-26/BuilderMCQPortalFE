@@ -1,9 +1,5 @@
 'use server';
-import { redirect } from "next/navigation";
-import { getToken } from "./admin-login";
-import Cookies from "js-cookie";
 import { revalidatePath } from "next/cache";
-import { getSessionData } from "./actions"; 
 import { cookies } from "next/headers";
 export async function getTechnologies(){
     const response = await fetch('http://localhost:8000/api/technologies',{
@@ -25,7 +21,6 @@ function isInvalidText(text){
     return !text || text.trim() === '';
 }
 export async function addTechnology(prevState,formData){
-    console.log(formData);
     const technology = {
         name: formData.get('name'),
         duration: formData.get('duration'),

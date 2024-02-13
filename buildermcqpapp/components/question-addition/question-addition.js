@@ -71,7 +71,7 @@ const QuestionAddition = ({ technology }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto rounded-md shadow-md mb-[10px]">
+    <div className="h-dvh max-w-md mx-auto rounded-md shadow-md mb-[10px]">
       <form
         className="max-w-md mx-auto mt-8 p-4 border rounded shadow-lg bg-white"
         onSubmit={handleSubmit}

@@ -1,18 +1,21 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { FiDelete } from "react-icons/fi";
+import ConfirmationBox from "../confirmation-box/confirmation";
 
 export default function QuestionsTable({ data }) {
   const navigate = useRouter();
   return (
     <div className="overflow-x-auto">
-      <div className="px-4 py-2 text-right">
-        <button
-          onClick={() => navigate.push("/admin/questions/add-question")}
-          className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-        >
-          Add Question
-        </button>
+      <div className="px-4 py-2 text-right flex flex-row-reverse">
+        <div>
+          <button
+            onClick={() => navigate.push("/admin/questions/select-tech")}
+            className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          >
+            Add Question
+          </button>
+        </div>
       </div>
       <table className="min-w-full bg-gray-100 border border-gray-300">
         <thead className="text-left">
@@ -38,7 +41,9 @@ export default function QuestionsTable({ data }) {
                 {row.optionType === "radio" ? "single" : "multiple"}
               </td>
               <td className="py-2 px-4 border-b">
-                <button className="text-red-500 hover:text-red-600">
+                <button
+                  className="text-red-500 hover:text-red-600"
+                >
                   <FiDelete />
                 </button>
               </td>
