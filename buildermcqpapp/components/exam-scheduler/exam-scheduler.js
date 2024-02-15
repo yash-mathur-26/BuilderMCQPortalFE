@@ -1,17 +1,14 @@
 "use client";
+import { scheduleExam } from "@/lib/exam-scheduler";
 import { useState } from "react";
-export default function ExamScheduler() {
+export default function ExamScheduler({technologiesData}) {
+  const durations = Array.from({ length: 121 }, (_, i) => i); 
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [technology, setTechnology] = useState("");
+  const [technology, setTechnology] = useState("Select Technology");
   const [score, setScore] = useState("");
   const [duration, setDuration] = useState("");
   const [errors, setErrors] = useState({});
-  const techOptions = [
-    { id: 1, name: "React" },
-    { id: 2, name: "Node JS" },
-    { id: 3, name: "ROR" },
-  ];
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -27,15 +24,14 @@ export default function ExamScheduler() {
       setErrors(validationErrors);
       return;
     }
-
-    console.log("Form submitted:", {
-      startDate,
-      endDate,
-      technology,
-      score,
-      duration,
-    });
-
+    const payload = {
+      technology:technology,
+      score:score,
+      startDate:startDate,
+      endDate:endDate,
+      duration:duration
+    }
+    scheduleExam(payload);
     setStartDate("");
     setEndDate("");
     setTechnology("");
@@ -93,7 +89,7 @@ export default function ExamScheduler() {
             required
           >
             <option value="">Select an exam technology</option>
-            {techOptions.map((tech) => (
+            {technologiesData.map((tech) => (
               <option key={tech.id} value={tech.id}>
                 {tech.name}
               </option>
@@ -116,13 +112,21 @@ export default function ExamScheduler() {
           <label className="block text-sm font-medium text-gray-600">
             Exam Duration
           </label>
-          <input
-            type="text"
+          <select
+            id="minutes"
+            name="minutes"
             className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
             value={duration}
             onChange={(e) => setDuration(e.target.value)}
-            required
-          />
+          >
+            <option value="">Select Minutes</option>
+            {durations.map((min)=>(
+                <option key={min} value={min}>
+                    {min} { min===1 ? 'min':'mins' }
+                </option>
+            ))}
+        </select>
+
         </div>
         <button
           type="submit"
