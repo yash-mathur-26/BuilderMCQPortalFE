@@ -23,6 +23,9 @@ export default function NavBarLinks() {
         <Link href="/admin/questions" className="hover:text-gray-300">
           Questions
         </Link>
+        <Link href="/admin/users" className="hover:text-gray-300">
+          Users
+        </Link>
       </div>
       <div className="relative">
         <button
