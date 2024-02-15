@@ -1,6 +1,5 @@
 'use server';
 import { revalidatePath } from "next/cache";
-import { getTechnologyId } from "./technology"; 
 import { cookies } from "next/headers"; 
 function isInvalidText(text){
     return !text || text.trim() === '';
