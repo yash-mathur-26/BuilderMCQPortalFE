@@ -27,7 +27,7 @@ export async function handleLoginSession(sessionData) {
   cookies().set("session", encryptedSessionData, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    maxAge: 60 * 60 * 2,
+    maxAge: 60 * 60 * 1,
     path: "/admin",
   });
 }

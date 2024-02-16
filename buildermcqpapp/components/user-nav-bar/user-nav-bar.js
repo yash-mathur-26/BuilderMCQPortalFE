@@ -2,12 +2,19 @@
 import Image from "next/image";
 import Test from "../../assets/Test.jpg";
 import { useState } from "react";
+import { useRouter } from "next/navigation"; 
 import Link from "next/link";
+import { removeSession } from "@/lib/user-login"; 
 export default function NavBarLinks() {
   const [dropdown, setDropDown] = useState(false);
+  const router = useRouter();
   const handleDropDown = () => {
     setDropDown(!dropdown);
   };
+  const logout=()=>{
+    removeSession();
+    router.push('/');
+  }
   return (
     <div className="bg-gray-800 text-white p-4 flex justify-between items-center">
       <div className="flex space-x-4">
@@ -48,7 +55,7 @@ export default function NavBarLinks() {
             >
               Profile
             </Link>
-            <Link href="/" className="hover:text-gray-300 block py-2">
+            <Link href="" className="hover:text-gray-300 block py-2" onClick={logout}>
               Logout
             </Link>
           </div>

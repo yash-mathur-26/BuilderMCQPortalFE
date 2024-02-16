@@ -30,10 +30,10 @@ export async function checkLogin(){
 
 }
 
-export async function removeToken(){
-    await Cookies.remove('sessionToken');
+export async function removeAdminSession(){
+    const cookies1 = cookies().delete("session");
+    return cookies1;
 }
-
 export async function getToken(){
     console.log(cookies().get('session'));
     return cookies().get('session');

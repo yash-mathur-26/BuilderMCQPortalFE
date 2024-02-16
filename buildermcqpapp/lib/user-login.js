@@ -25,7 +25,7 @@ export async function handleUserLoginSession(sessionData) {
     cookies().set("userSession", encryptedSessionData, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        maxAge: 60 * 60 * 2,
+        maxAge: 60 * 60 * 1,
         path: "/",
         });
     }
@@ -33,4 +33,7 @@ export async function handleUserLoginSession(sessionData) {
 export async function getUserSessionData() {
     const encryptedSessionData = cookies().get("userSession")?.value;
     return encryptedSessionData ? encryptedSessionData : null;
+}
+export async function removeSession(){
+    cookies().delete("userSession");
 }
