@@ -3,24 +3,21 @@ import React, { useState } from "react";
 import Timer from "../timer/timer";
 
 function UserExam({ data }) {
-  const questions = data.questions.map((question, index) => {
-    return { ...question, status: "not-attempted", index };
-  });
-  console.log("QUESTIONS =====> ", questions);
+  const [questions, setQuestions] = useState(
+    data.questions.map((question, index) => {
+      return { ...question, status: "not-attempted", index };
+    })
+  );
   const [options, setOptions] = useState(questions[0].options.split(" | "));
-  const [optionType, setOptionType] = useState(questions[0].optionType);
-  const [question, setQuestion] = useState(questions[0].question);
   const [questionObject, setQuestionObject] = useState(questions[0]);
 
   const setQuestionsToState = (index) => {
-    setQuestion(questions[index].question);
     setOptions(questions[index].options.split(" | "));
     setQuestionObject(questions[index]);
   };
 
   const handleChangeQuestion = (index) => {
     setQuestionsToState(index);
-    console.log("INDEX =====> ", index);
   };
 
   const handlePreviousQuestion = () => {
@@ -30,11 +27,19 @@ function UserExam({ data }) {
   };
 
   const handleNextQuestion = () => {
-    console.log(" NEXT ", question);
-    console.log("INDEX ====> ", questionObject.index);
     if (questionObject.index < questions.length - 1) {
       setQuestionsToState(questionObject.index + 1);
     }
+  };
+
+  const handleMarkForReview = () => {
+    const updatedQuestions = questions.map((question) => {
+      if (questionObject.index === question.index)
+        return { ...question, status: "mark-for-review" };
+      return question;
+    });
+    setQuestions(updatedQuestions);
+    handleNextQuestion();
   };
 
   return (
@@ -46,14 +51,18 @@ function UserExam({ data }) {
         <div className="flex flex-col justify-between w-full">
           <div className="m-10">
             <div>
-              <h1 className="font-bold text-2xl">{question}</h1>
+              <h1 className="font-bold text-2xl">{questionObject.question}</h1>
             </div>
             <div className="mt-8">
               {options.map((option) => {
                 return (
                   <div className="h-8">
                     <input
-                      type={optionType === "radio" ? "radio" : "checkbox"}
+                      type={
+                        questionObject.optionType === "radio"
+                          ? "radio"
+                          : "checkbox"
+                      }
                       name="answer"
                       value={option}
                       className="mr-4"
@@ -68,7 +77,10 @@ function UserExam({ data }) {
           <div className="h-20 bg-gray-400 mt-auto">
             <div className="flex justify-between">
               <div>
-                <button className="m-4 ml-10 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">
+                <button
+                  onClick={() => handleMarkForReview()}
+                  className="m-4 ml-10 focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                >
                   Mark for review
                 </button>
                 <button
@@ -105,9 +117,13 @@ function UserExam({ data }) {
                   <button
                     onClick={() => handleChangeQuestion(index)}
                     className={`${
-                      question.status === "not-attempted"
+                      questionObject.index === index
+                        ? "bg-green-400"
+                        : question.status === "not-attempted"
                         ? "bg-[#E9ECEF]"
-                        : "bg-green-400"
+                        : question.status === "mark-for-review"
+                        ? "bg-red-500"
+                        : null
                     } w-9 h-9 rounded-tl-xl`}
                   >
                     {index + 1}
