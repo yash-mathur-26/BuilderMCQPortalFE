@@ -1,8 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Timer from "../timer/timer";
-
-function UserExam({ data }) {
+function UserExam({ data,examName }) {
   const [questions, setQuestions] = useState(
     data.questions.map((question, index) => {
       return { ...question, status: "not-attempted", index };
@@ -10,7 +9,6 @@ function UserExam({ data }) {
   );
   const [options, setOptions] = useState(questions[0].options.split(" | "));
   const [questionObject, setQuestionObject] = useState(questions[0]);
-
   const setQuestionsToState = (index) => {
     setOptions(questions[index].options.split(" | "));
     setQuestionObject(questions[index]);
@@ -45,7 +43,7 @@ function UserExam({ data }) {
   return (
     <div className="relative h-auto min-h-dvh w-full flex flex-col">
       <div className="bg-slate-400 font-black text-4xl h-12">
-        <h1 className="text-center"> Builder MCQ Mock Test - ReactJS</h1>
+        <h1 className="text-center"> Builder MCQ Mock Test - {examName}  </h1>
       </div>
       <div className="flex justify-between min-h-dvh">
         <div className="flex flex-col justify-between w-full">
