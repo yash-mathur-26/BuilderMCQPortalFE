@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers"; 
 export async function sendUserLoginData(loginDetails){
     console.log("login",loginDetails)
@@ -22,7 +23,14 @@ export async function sendUserLoginData(loginDetails){
 
 export async function handleUserLoginSession(sessionData) {
     const encryptedSessionData = sessionData?.token;
+    const userData = sessionData?.user;
     cookies().set("userSession", encryptedSessionData, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        maxAge: 60 * 60 * 1,
+        path: "/",
+        });
+    cookies().set("userDataCookie", JSON.stringify(userData) , {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         maxAge: 60 * 60 * 1,
@@ -34,6 +42,11 @@ export async function getUserSessionData() {
     const encryptedSessionData = cookies().get("userSession")?.value;
     return encryptedSessionData ? encryptedSessionData : null;
 }
-export async function removeSession(){
-    cookies().delete("userSession");
+export async function getUserCookieData(){
+    const encryptedUserData = await cookies().get("userDataCookie")?.value;
+    console.log(encryptedUserData);
+    return encryptedUserData ? encryptedUserData : null;
+}
+export async function removeUserSession(){
+    cookies().set("userSession","",{ expires:new Date(0) });
 }

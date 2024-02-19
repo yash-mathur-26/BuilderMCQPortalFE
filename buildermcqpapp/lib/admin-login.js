@@ -31,8 +31,7 @@ export async function checkLogin(){
 }
 
 export async function removeAdminSession(){
-    const cookies1 = cookies().delete("session");
-    return cookies1;
+    cookies().set("session","",{ expires:new Date(0) });
 }
 export async function getToken(){
     console.log(cookies().get('session'));

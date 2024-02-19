@@ -26,10 +26,13 @@ export async function handleLoginSession(sessionData) {
   const encryptedSessionData = sessionData?.token;
   cookies().set("session", encryptedSessionData, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
     maxAge: 60 * 60 * 1,
     path: "/admin",
   });
+}
+
+export async function removeSession(){
+  cookies().set("session","",{ expires:new Date(0) });
 }
 
 export async function getSessionData() {

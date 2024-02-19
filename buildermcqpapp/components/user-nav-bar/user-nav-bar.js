@@ -4,15 +4,15 @@ import Test from "../../assets/Test.jpg";
 import { useState } from "react";
 import { useRouter } from "next/navigation"; 
 import Link from "next/link";
-import { removeSession } from "@/lib/user-login"; 
+import { removeUserSession } from "@/lib/user-login"; 
 export default function NavBarLinks() {
   const [dropdown, setDropDown] = useState(false);
   const router = useRouter();
   const handleDropDown = () => {
     setDropDown(!dropdown);
   };
-  const logout=()=>{
-    removeSession();
+  const logout=async ()=>{
+    await removeUserSession();
     router.push('/');
   }
   return (
