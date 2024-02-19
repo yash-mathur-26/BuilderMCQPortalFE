@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 export async function getExamQuestions() {
   const techId = JSON.parse(cookies().get('userDataCookie').value)?.technology?.id;
   const response = await fetch(
-    `http://localhost:8000/api/questions?technology=${techId}`,
+    `http://localhost:8000/api/questions/generate-test?technology=${techId}`,
     {
       method: "GET",
       headers: {
@@ -14,7 +14,6 @@ export async function getExamQuestions() {
     }
   );
   const data = await response.json();
-  console.log("Questions",data.data);
   return data.data;
 }
 
