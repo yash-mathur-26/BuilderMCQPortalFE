@@ -1,8 +1,10 @@
 "use client";
 import React, { useState } from "react";
-import { submitExamStat, updateTestData } from "./actions";
+import { submitExamStat, updateTestData,getExamResults } from "./actions";
 import Timer from "../timer/timer";
-
+import ResultModal from "../result-modal/result-modal";
+import Modal from "../submit-modal/submit-modal";
+import { useRouter } from "next/navigation";
 function UserExam({ data, examName }) {
   const [questions, setQuestions] = useState(
     data.questions.map((question, index) => {
@@ -13,6 +15,18 @@ function UserExam({ data, examName }) {
   const [questionObject, setQuestionObject] = useState(questions[0]);
   const [selectedOption, setSelectedOption] = useState([]);
   const [testId, setTestId] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+  const [score,setScore] = useState(0);
+  const [wrong,setWrong] = useState(0);
+  const router = useRouter();
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   const setQuestionsToState = (index) => {
     setOptions(questions[index].options.split(" | "));
@@ -89,9 +103,16 @@ function UserExam({ data, examName }) {
     console.log("RESPONSE =====> ", response);
   };
 
-  const handleSubmitTest = () => {
-    updateTestData({ isCompleted: true }, testId, setUpdateResponse);
-    console.log("TEST ID ====> ", testId);
+  const handleSubmitTest = async () => {
+    const examScore = await getExamResults({isCompleted:true},testId,setUpdateResponse);
+    console.log("Exam Score",examScore);
+    setScore(examScore.examScore);
+    setWrong(examScore.incorrectScore);
+    setIsResultModalOpen(true);
+  };
+  const closeResultModal = () => {
+    setIsResultModalOpen(false);
+    router.push('/dashboard');
   };
 
   return (
@@ -152,11 +173,19 @@ function UserExam({ data, examName }) {
               </div>
               <div>
                 <button
-                  onClick={() => handleSubmitTest()}
+                  onClick={() => openModal()}
                   className="m-4 mr-10 focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 >
                   Submit Test
                 </button>
+                <Modal isOpen={isModalOpen} onClose={closeModal} onSubmit={handleSubmitTest}>
+                </Modal>
+                <ResultModal
+                  isOpen={isResultModalOpen}
+                  onClose={closeResultModal}
+                  correctAnswers={score}
+                  wrongAnswers={wrong}
+                />
               </div>
             </div>
           </div>

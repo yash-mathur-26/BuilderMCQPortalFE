@@ -15,7 +15,7 @@ export async function getQuestions() {
 
 export async function addQuestion(payload) {
   const response = await fetch("http://localhost:8000/api/questions", {
-    cache: "no-store",
+    cache: 'no-store', 
     method: "POST",
     body: JSON.stringify(payload),
     headers: {

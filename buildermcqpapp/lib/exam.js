@@ -35,6 +35,23 @@ export async function getExams() {
   const data = await response.json();
   return data.data;
 }
+export async function getExamResult(body,testId) {
+  "use server";
+  const userId = JSON.parse(cookies().get("userDataCookie")?.value).id;
+  const response = await fetch(
+    `http://localhost:8000/api/exam/examResults?userId=${userId}&testId=${testId}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: cookies().get("userSession")?.value,
+      },
+    }
+  );
+  const data = await response.json();
+  return data.data;
+}
+
 
 export async function createExamStat(body) {
   body.userId = JSON.parse(cookies().get("userDataCookie")?.value).id;
@@ -52,12 +69,12 @@ export async function createExamStat(body) {
 export async function getUserTest() {
   const technology = JSON.parse(cookies().get("userDataCookie")?.value)
     .technology.id;
-  const userId = JSON.parse(cookies().get("userDataCookie")?.value).id;
   const response = await fetch(
-    `http://localhost:8000/api/tests?technology=${technology}&userId=${userId}&isCompleted=${false}`,
+    `http://localhost:8000/api/tests?technology=${technology}&isCompleted=${false}`,
     {
       method: "GET",
       headers: {
+        store:'no-cache',
         "Content-Type": "application/json",
         token: cookies().get("userSession")?.value,
       },

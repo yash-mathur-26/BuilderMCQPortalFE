@@ -54,9 +54,10 @@ const QuestionAddition = ({ technology }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // Add your logic to submit the form data
+    console.log("Correct Answer",correctAnswer);
     const payload = await questionSchema.validate({
       question,
-      answer: correctAnswer?.join(" | "),
+      answer: isMultipleChoice ? correctAnswer?.join(" | ") : correctAnswer,
       options: answers?.join(" | "),
       optionType: isMultipleChoice ? "checkbox" : "radio",
       technologyId: technology.technology,

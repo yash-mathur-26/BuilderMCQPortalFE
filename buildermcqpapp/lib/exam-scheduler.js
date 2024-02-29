@@ -38,3 +38,19 @@ export async function scheduleExam(payload){
         revalidatePath('/admin/dashboard');
     }
 }
+
+export async function getExamSummary(){
+    const response = await fetch('http://localhost:8000/api/tests',{
+        cache:'no-store',
+        method: 'GET',
+        headers:{
+            'Content-Type': 'application/json',
+            'token': cookies().get('session')?.value
+        }
+    });
+    if(!response.ok){
+        throw new Error(data.message || 'Something went wrong!');
+    } else {
+        return response.json();    
+    }
+}
