@@ -3,7 +3,6 @@ import Link from "next/link";
 export default async function UserExamDashboard(){
     const exams = await getExams();
     const examName = await getExamNameTechnologies();
-    
     return (
             <div className="flex flex-wrap justify-around">
             {
@@ -13,12 +12,12 @@ export default async function UserExamDashboard(){
                 <p className="text-gray-600 mb-2">Number of Questions: {exam.score}</p>
                 <p className="text-gray-600 mb-2">Exam duration: {exam.duration}</p>
                 
-                {exam.isActive === true && (
+                {!exam.isCompleted ? (
                         <Link href={`/dashboard/exam/${examName}`} className="bg-blue-500 text-white px-4 py-2 rounded cursor-pointer">
                             Start Exam
                         </Link>
-                )}
-                {exam.isActive === false && (
+                ):
+                (
                 <button
                     className="bg-gray-400 text-gray-700 px-4 py-2 rounded cursor-not-allowed"
                     disabled

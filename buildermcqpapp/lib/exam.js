@@ -51,6 +51,23 @@ export async function getExamResult(body,testId) {
   const data = await response.json();
   return data.data;
 }
+export async function getTest() {
+  "use server";
+  const techId = JSON.parse(cookies().get("userDataCookie").value)?.technology
+    ?.id;
+  const response = await fetch(
+    `http://localhost:8000/api/tests?technology=${techId}&isCompleted=true`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        token: cookies().get("userSession")?.value,
+      },
+    }
+  );
+  const data = await response.json();
+  return data.data;
+}
 
 
 export async function createExamStat(body) {
@@ -101,7 +118,7 @@ export async function getExamNameTechnologies() {
   return idData[0].name;
 }
 
-export async function updateTestDetails(body, id) {
+export async function updateTestDetails(body,id) {
   body.userId = JSON.parse(cookies().get("userDataCookie")?.value).id;
   const response = await fetch(`http://localhost:8000/api/tests?id=${id}`, {
     method: "PATCH",

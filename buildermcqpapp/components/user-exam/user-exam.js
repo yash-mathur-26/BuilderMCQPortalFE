@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { submitExamStat, updateTestData,getExamResults } from "./actions";
+import { submitExamStat, updateTestData,getExamResults,getTestResults } from "./actions";
 import Timer from "../timer/timer";
 import ResultModal from "../result-modal/result-modal";
 import Modal from "../submit-modal/submit-modal";
 import { useRouter } from "next/navigation";
+
 function UserExam({ data, examName }) {
   const [questions, setQuestions] = useState(
     data.questions.map((question, index) => {
@@ -19,6 +20,7 @@ function UserExam({ data, examName }) {
   const [isResultModalOpen, setIsResultModalOpen] = useState(false);
   const [score,setScore] = useState(0);
   const [wrong,setWrong] = useState(0);
+  const [result,setResult] = useState("Fail");
   const router = useRouter();
   const openModal = () => {
     setIsModalOpen(true);
@@ -104,7 +106,14 @@ function UserExam({ data, examName }) {
   };
 
   const handleSubmitTest = async () => {
+
     const examScore = await getExamResults({isCompleted:true},testId,setUpdateResponse);
+    await updateTestData({isCompleted:true},testId);
+    const score = await getTestResults()
+    if(examScore.examScore>=score)
+      {
+        setResult("Pass")
+      }
     console.log("Exam Score",examScore);
     setScore(examScore.examScore);
     setWrong(examScore.incorrectScore);
@@ -185,6 +194,7 @@ function UserExam({ data, examName }) {
                   onClose={closeResultModal}
                   correctAnswers={score}
                   wrongAnswers={wrong}
+                  result={result}
                 />
               </div>
             </div>
